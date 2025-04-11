@@ -22,7 +22,7 @@ export interface ProductResponse {
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:5192/api/Produit';
+  private apiUrl = 'https://tdproduit-7.onrender.com/api/Produit';
 
   constructor(private http: HttpClient) { }
 

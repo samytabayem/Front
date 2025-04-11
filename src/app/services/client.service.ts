@@ -26,7 +26,7 @@ export interface Address {
   providedIn: 'root'
 })
 export class ClientService {
-  private apiUrl = 'http://localhost:5192/api/client';
+  private apiUrl = 'https://tdproduit-7.onrender.com/api/client';
 
   constructor(private http: HttpClient) { }
 

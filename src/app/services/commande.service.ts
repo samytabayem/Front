@@ -27,7 +27,7 @@ export interface CommandeProduits {
   providedIn: 'root'
 })
 export class CommandeService {
-  private apiUrl = 'http://localhost:5192/api/commande';
+  private apiUrl = 'https://tdproduit-7.onrender.com/api/commande';
 
   constructor(private http: HttpClient) { }
 
