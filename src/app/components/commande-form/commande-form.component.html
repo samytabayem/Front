@@ -1,0 +1,60 @@
+<mat-card>
+  <h2>Nouvelle Commande</h2>
+
+  <form [formGroup]="commandeForm" (ngSubmit)="saveCommande()">
+
+
+   
+    <!-- Sélection du client -->
+    <mat-form-field appearance="outline">
+      <mat-label>Client</mat-label>
+      <mat-select formControlName="clientID">
+        <mat-option *ngFor="let client of clients" [value]="client.clientID">
+          {{ client.firstName }} {{ client.lastName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Liste des produits -->
+    <div formArrayName="commandeProduits">
+      <h3>Produits</h3>
+
+      <button mat-raised-button color="primary" (click)="addProduit()" type="button">
+        Ajouter un Produit
+      </button>
+
+      <div *ngFor="let produit of commandeProduits.controls; let i = index" [formGroupName]="i" class="produit-group">
+
+        <!-- Sélection du produit -->
+        <mat-form-field appearance="outline">
+          <mat-label>Produit</mat-label>
+          <mat-select formControlName="produitID">
+            <mat-option *ngFor="let produit of produits" [value]="produit.produitID"
+                        [disabled]="produit.produitID !== undefined && isProductAlreadySelected(produit.produitID)">
+              {{ produit.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Quantité -->
+        <mat-form-field appearance="outline">
+          <mat-label>Quantité</mat-label>
+          <input matInput type="number" formControlName="quantity" min="1">
+        </mat-form-field>
+
+        <!-- Bouton pour supprimer un produit -->
+        <button mat-icon-button color="warn" (click)="removeProduit(i)" type="button">
+          ❌
+        </button>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button mat-raised-button color="primary" type="submit" [disabled]="commandeForm.invalid">
+        Enregistrer
+      </button>
+      <button mat-button color="warn" (click)="navigateBack()">Annuler</button>
+    </div>
+
+  </form>
+</mat-card>

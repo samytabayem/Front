@@ -1,0 +1,75 @@
+<mat-card>
+  <h2>{{ clientID ? 'Modifier' : 'Ajouter' }} un Client</h2>
+
+  <form [formGroup]="clientForm" (ngSubmit)="saveClient()">
+    <!-- Prénom -->
+     <div style="display: flex;justify-content: space-between;align-items: center;margin-bottom: 1rem;">
+      <div>
+        <h3>Information sur le client</h3>
+    <mat-form-field appearance="outline">
+      <mat-label>Prénom</mat-label>
+      <input matInput formControlName="firstName">
+    </mat-form-field>
+
+    <!-- Nom -->
+    <mat-form-field appearance="outline">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="lastName">
+    </mat-form-field>
+
+    <!-- Date de naissance -->
+    <mat-form-field appearance="outline">
+      <mat-label>Date de naissance</mat-label>
+      <input matInput type="date" formControlName="dateOfBirth">
+    </mat-form-field>
+
+  </div>
+
+    <!-- Liste dynamique des adresses -->
+    <div *ngIf="adress">
+    <div formArrayName="adress">
+      <div style="display: flex;justify-content: space-between;">
+        <h3>Adresses</h3>
+        <button mat-raised-button color="primary" (click)="addAddress()" type="button">+</button>
+      </div>
+      
+      <div *ngFor="let address of adress.controls; let i = index" [formGroupName]="i" class="address-group">
+        <mat-form-field appearance="outline">
+          <mat-label>Rue</mat-label>
+          <input matInput formControlName="street">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Code Postal</mat-label>
+          <input matInput formControlName="zipcode">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Ville</mat-label>
+          <input matInput formControlName="city">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Pays</mat-label>
+          <input matInput formControlName="country">
+        </mat-form-field>
+     <div *ngIf="i >0">
+        <button mat-button color="warn" (click)="removeAddress(i)" type="button">Supprimer</button></div>
+      </div>
+
+      
+       <!-- Afficher un message d'erreur si aucune adresse n'est ajoutée -->
+       <div *ngIf="clientForm.get('adress')?.hasError('atLeastOneAddress') && clientForm.get('adress')?.touched">
+        <mat-error>Vous devez ajouter au moins une adresse.</mat-error>
+      </div>
+      </div>
+    </div>
+  </div>
+    <div class="button-group">
+      <button mat-raised-button color="primary" type="submit" [disabled]="clientForm.invalid">
+        {{ clientID ? 'Mettre à jour' : 'Ajouter' }}
+      </button>
+      <button mat-raised-button color="warn" routerLink="/clients">Annuler</button>
+    </div>
+  </form>
+</mat-card>

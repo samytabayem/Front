@@ -1,0 +1,100 @@
+<mat-card>
+    <h2>Liste des Adresses</h2>
+  
+    <!-- Formulaire de filtre -->
+    <div style="display: flex; justify-content: space-between; margin-top: 2rem; margin-bottom: 1rem;">
+      <form [formGroup]="filterForm" style="display: flex; gap: 1rem;">
+        <mat-form-field appearance="fill">
+          <mat-label>Pays</mat-label>
+          <input matInput formControlName="country">
+        </mat-form-field>
+  
+        <button mat-raised-button color="primary" (click)="applyFilters()">Filtrer</button>
+      </form>
+    </div>
+  
+    <!-- Table des adresses -->
+    <table mat-table [dataSource]="adress" class="mat-elevation-z8">
+      <ng-container matColumnDef="street">
+        <th mat-header-cell *matHeaderCellDef> Rue </th>
+        <td mat-cell *matCellDef="let address"> {{ address.street }} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="city">
+        <th mat-header-cell *matHeaderCellDef> Ville </th>
+        <td mat-cell *matCellDef="let address"> {{ address.city }} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="zipcode">
+        <th mat-header-cell *matHeaderCellDef> Code Postal </th>
+        <td mat-cell *matCellDef="let address"> {{ address.zipcode }} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="country">
+        <th mat-header-cell *matHeaderCellDef> Pays </th>
+        <td mat-cell *matCellDef="let address"> {{ address.country }} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let address">
+          <button mat-button color="primary" (click)="onEditForm(address.adressID)">Modifier</button>
+          <button mat-button color="warn" (click)="onDeleteAddress(address.adressID)">Supprimer</button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="['street', 'city', 'zipcode', 'country', 'actions']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['street', 'city', 'zipcode', 'country', 'actions'];"></tr>
+    </table>
+  
+    <!-- Pagination -->
+    <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageIndex]="page - 1" (page)="onPageChange($event)">
+    </mat-paginator>
+  
+    <!-- Formulaire d'ajout / modification d'adresse -->
+    <mat-card style="margin-top: 2rem;">
+      <h2>{{ adressForm.value.adressID ? 'Modifier' : 'Ajouter' }} une adresse</h2>
+      <h2>Liste des Clients</h2>
+  <mat-form-field appearance="fill">
+    <mat-label>Sélectionnez un Client</mat-label>
+    <mat-select (selectionChange)="onSelectClient($event.value)">
+      <mat-option *ngFor="let client of clients" [value]="client.clientID">
+        {{ client.firstName }} {{ client.lastName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+      <form [formGroup]="adressForm">
+        <mat-form-field appearance="fill">
+          <mat-label>Rue</mat-label>
+          <input matInput formControlName="street" required>
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill">
+          <mat-label>Ville</mat-label>
+          <input matInput formControlName="city" required>
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill">
+          <mat-label>Code Postal</mat-label>
+          <input matInput formControlName="zipcode" required>
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill">
+          <mat-label>Pays</mat-label>
+          <input matInput formControlName="country" required>
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill">
+        <mat-label>Client ID</mat-label>
+        <input matInput formControlName="clientId" [readonly]="true">
+      </mat-form-field>
+  
+        <div style="display: flex; justify-content: space-between;">
+          <button mat-raised-button color="primary" (click)="onAddAddress()" *ngIf="!adressForm.value.adressID">Ajouter</button>
+          <button mat-raised-button color="accent" (click)="onEditAddress()" *ngIf="adressForm.value.adressID">Modifier</button>
+        </div>
+      </form>
+    </mat-card>
+  </mat-card>
+  

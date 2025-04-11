@@ -1,0 +1,37 @@
+<mat-card *ngIf="client">
+  <h2>Détails du Client</h2>
+  <p><strong>Prénom:</strong> {{ client.firstName }}</p>
+  <p><strong>Nom:</strong> {{ client.lastName }}</p>
+  <p><strong>Date de Naissance:</strong> {{ client.dateOfBirth | date }}</p>
+
+  <h3>Adresses</h3>
+  <ul>
+    <li *ngFor="let adresse of client.adress">
+      {{ adresse.street }}, {{ adresse.city }}, {{ adresse.country }} ({{ adresse.zipcode }})
+    </li>
+  </ul>
+
+  <h3>Commandes</h3>
+  <ul *ngIf="client.commande.length > 0; else noCommande">
+    <li *ngFor="let commande of client.commande">
+      Commande #{{ commande.numCommande }} - Date: {{ commande.date | date:'short' }}
+
+      <ul>
+        <li *ngFor="let produit of commande.commandeProduits">
+          {{ produit.produit?.name }} ({{ produit.quantity }})
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <ng-template #noCommande>
+    <p>Aucune commande trouvée.</p>
+  </ng-template>
+
+  <!-- ✅ Boutons d'actions -->
+  <div class="button-group">
+    <button mat-raised-button color="primary" (click)="navigateToEditClient()">Modifier</button>
+    <button mat-raised-button color="accent" (click)="navigateToNewOrder()">Passer une Commande</button>
+    <button mat-raised-button color="warn" (click)="deleteClient()">Supprimer</button>
+    <button mat-button (click)="navigateBack()">Retour</button>
+  </div>
+</mat-card>
